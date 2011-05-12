@@ -1,0 +1,13 @@
+-=EngiChess=-
+Engichess is a project intending to create a full fledged AI based Chess program, capable of competitively playing chess against a human being.
+
+The Chess engine will be written in C++ and the GUI will (most probably) use OpenGL.
+
+The project is being undertaken by students of the Computer Engineering Department at Goa Engineering College, Ponda, Goa
+
+-=Source Code=-
+Compiled using Codeblocks V. 8.02 on a a macine running Windows 7
+
+-=Contact=-
+Navin Pai lifeofnavin[at]gmail[dot]com
+Damodar Dukle ddukle21[at]yahoo[dot]com

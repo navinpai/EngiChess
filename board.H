@@ -16,6 +16,8 @@ const int none = 2;
 int bx[64];
 const int startup[64] = { rook, knight, bishop, queen, king, bishop, knight, rook, pawn, pawn,pawn,pawn,pawn,pawn,pawn, pawn, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -pawn, -pawn, -pawn, -pawn, -pawn, -pawn, -pawn, -pawn, -rook, -knight, -bishop, -queen, -king, -bishop, -knight, -rook};
 /*------------------------------------------------*/
+
+//Pawns are encouraged to stay in the center and advance forward
 short PawnTable[64] =
 {
   0,  0,  0,  0,  0,  0,  0,  0,
@@ -27,6 +29,8 @@ short PawnTable[64] =
   5, 10, 10,-25,-25, 10, 10,  5,
   0,  0,  0,  0,  0,  0,  0,  0
 };
+
+//Knights are encouraged to control the center and stay away from edges to increase mobility
 short KnightTable[64] =
 {
  -50,-40,-30,-30,-30,-30,-40,-50,
@@ -38,6 +42,8 @@ short KnightTable[64] =
  -40,-20,  0,  5,  5,  0,-20,-40,
  -50,-40,-20,-30,-30,-20,-40,-50,
 };
+
+//Bishops are also encouraged to control the center and stay away from edges and corners
 short BishopTable[64] =
 {
  -20,-10,-10,-10,-10,-10,-10,-20,
@@ -50,6 +56,8 @@ short BishopTable[64] =
  -20,-10,-40,-10,-10,-40,-10,-20,
 };
 
+//Kings have 2 piece square tables, one for the end game and one for the middle game.  
+//During the middle game kings are encouraged to stay in the corners, while in the end game kings are encouraged to move towards the center
 short KingTable[64] =
 {
   -30, -40, -40, -50, -50, -40, -40, -30,
@@ -100,7 +108,7 @@ class Board   //Class Board begins here
 				square[k]=startup[k];
 			}
 		};
-		//printboard
+		//Prints The Board
 		void printboard()
 		{
 			int a,b;
@@ -159,7 +167,8 @@ class Board   //Class Board begins here
 			}
 			cout << endl << endl;
 		};
-		//makeboard
+		
+		//Make board
 		void makeboard(int ary[64])
 		{
 			for(int k=0;k<64;k++)
@@ -167,7 +176,7 @@ class Board   //Class Board begins here
 				square[k]=ary[k];
 			}
 		};
-		//make move on a given board
+		//Make move on a given board
 		void makemove(int movefrom,int moveto)
 		{
 			if(checkturn(movefrom))
@@ -180,7 +189,7 @@ class Board   //Class Board begins here
 				}
 			}
 		};
-		//to see how the knight moves
+		//Rules For Knights Moves
 		int moveknight(int rs,int cs,int rd,int cd)
 		{
 			int app=0;
@@ -202,7 +211,8 @@ class Board   //Class Board begins here
 			{app=1;}
 			return app;
 		};
-		//to see how bishop moves
+		
+		//Rules For Bishops Moves
 		int movebishop(int rs,int cs,int rd,int cd)
 		{
 			int app=0;int ct=0;int nsib=0;int k=0;int newrow=0;int newcol=0;
@@ -307,7 +317,8 @@ class Board   //Class Board begins here
 			}		//ensures diagonal mvmt
 			return app;
 		};
-		//to see how the rook moves
+		
+		//Rules For Rooks Moves
 		int moverook(int rs,int cs,int rd,int cd)
 		{
 			int app=0;int t1=0,t2=0;
@@ -367,6 +378,8 @@ class Board   //Class Board begins here
 			}
 			return app;
 		};
+		
+		
 		//check validity of our move
 		int checkvalid(int movefrom,int moveto)
 		{
@@ -438,37 +451,33 @@ class Board   //Class Board begins here
 			}
 			return app;
 		};
+		
+		
 		//check turnwise if our move is legal
 		int checkturn(int movefrom)
-		{
-			int attackingplayer;
-			if(square[movefrom]<0)
-				attackingplayer=w;
-			if(square[movefrom]>0)
-				attackingplayer=b;
-			if(square[movefrom]==0)
-				attackingplayer=none;
-			if((WhoseMove==white)&&(attackingplayer==w))
-				return 1;
-			else if((WhoseMove==black)&&(attackingplayer==b))
+		{	
+			if((WhoseMove==white)&&(square[movefrom]>0))
+			return 1;
+			else if((WhoseMove==black)&&(square[movefrom]<0))
 				return 1;
 			else
 				return 0;
 		};
 		//Search for Black mate or Black check
 		void findBlackMateOrCheck()
-		{
+		{	int k;	
 			int mfrom=0,mto=0;
-			int bkdanger=0,k;
+			int bkdanger=0;				
 			for(k = 0; k < 64; k++)
-			{
-				if(square[k]==king)
+			{		if(square[k]==-king)
 					break;  //Find the Black King
 			}
+			if(k==64)	
+			{	BlackMate=true;	EndGame=true;	return;	}
 			mto=k;
 			for (k = 0; k < 64; k++)
 			{
-				if(square[k]<0)
+				if(square[k]>0)
 				{
 					mfrom=k;
 					if(checkvalid(mfrom,mto))
@@ -491,18 +500,20 @@ class Board   //Class Board begins here
 
 		//Search for White mate or White check
 		void findWhiteMateOrCheck()
-		{
-			int mfrom=0,mto=0;
-			int wkdanger=0,k;
+		{	int k;
+			int mfrom=0,mto=0;	
+			int wkdanger=0;		
 			for (k = 0; k < 64; k++)
 			{
-				if(square[k]==-king)
+				if(square[k]==king)
 					break;  //Find the White King
 			}
+			if(k==64)	
+			{	WhiteMate=true;	EndGame=true;	return;	}
 			mto=k;
 			for (k = 0; k < 64; k++)
 			{
-				if(square[k]>0)
+				if(square[k]<0)
 				{
 					mfrom=k;
 					if(checkvalid(mfrom,mto))
@@ -524,5 +535,9 @@ class Board   //Class Board begins here
 		};
 
 
+		bool get_EndGame()	{	return EndGame;	};
+		bool get_BlackMate()	{	return BlackMate;	};
+		bool get_WhiteMate()	{	return WhiteMate;	};
+
+
 };   //Class Board ends here
-/*-------------------------------------------------*/

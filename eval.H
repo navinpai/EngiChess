@@ -64,28 +64,15 @@ public:
 			remainingPieces++;//Calculate Remaining Material for end game determination
 			//cout<<endl<<"remainingPieces:"<<remainingPieces<<endl;
 			//getch();
-			if (board1.square[x] < 0)
+			if (board1.square[x] < 0) //i.e White Piece
 			{
-				//cout<<endl<<"At x lies a White Piece:"<<endl;
-				//getch();
 				s1=EvaluatePieceScore(board1,x,whiteBishopCount,insufficientMaterial);
 				board1.Score += s1;
-				//cout<<endl<<"s1:"<<s1<<endl;
-				//cout<<endl<<"BOARD SCORE:"<<board1.Score<<endl;
-				//getch();
-				//WHITE PIECE
-
 			}
-			else if (board1.square[x] > 0)
+			else if (board1.square[x] > 0) //i.e Black Piece
 			{
-				//cout<<endl<<"At x lies a Black Piece:"<<endl;
-				//getch();
 				s2=EvaluatePieceScore(board1,x,blackBishopCount,insufficientMaterial);
 				board1.Score -= s2;				
-				//cout<<endl<<"s2:"<<s2<<endl;
-				//cout<<endl<<"BOARD SCORE:"<<board1.Score<<endl;
-				//getch();
-				//BLACK PIECE
 			}
 			if ((board1.square[x] == knight)||(board1.square[x] == -knight))
 			{
@@ -124,13 +111,9 @@ public:
 				board1.Score -= 10;
 			}
 		}
-		//Further Pawn Checking
-        //cout<<"EvaluatePieceScore:"<<EvaluatePieceScore(board1,8,whiteBishopCount,insufficientMaterial);
-		//system("cls");
-		//cout<<endl<<"BOARD SCORE:"<<board1.Score<<endl;
-		//getch();
 		return board1.Score;
 	};	
+	
 	//FUNCTION two
 	int EvaluatePieceScore(Board board2,int position,int &bishopCount,bool &insufficientMaterial)
 	{
@@ -138,7 +121,6 @@ public:
 		int attackedvalue=0,defendedvalue=0;
 		int vmoves=0;
 		int index = 0; 
-		//cout<<endl<<"i am in piece score function"<<endl;
 		index=position;
 		if (board2.square[position] > 0)
 		{
@@ -317,4 +299,3 @@ public:
 		return count;
 	};
 };//Class Evaluation ends here
-/*--------------------------------------------------*/

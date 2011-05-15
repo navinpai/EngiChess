@@ -5,7 +5,7 @@ const int bishop =  325;
 const int knight =  320;
 const int rook   =  500;
 const int queen  =  975;
-const int king   = 3000;
+const int king   = 32767;
 /*-----------------------------------------------*/
 const bool white = true ;
 const bool black = false;
@@ -178,10 +178,10 @@ class Board   //Class Board begins here
 		};
 		//Make move on a given board
 		void makemove(int movefrom,int moveto)
-		{
+		{  
 			if(checkturn(movefrom))
 			{
-				if(checkvalid(movefrom,moveto))
+ 				if(checkvalid(movefrom,moveto))
 				{
 					square[moveto]=square[movefrom];
 					square[movefrom]=0;
@@ -456,9 +456,9 @@ class Board   //Class Board begins here
 		//check turnwise if our move is legal
 		int checkturn(int movefrom)
 		{	
-			if((WhoseMove==white)&&(square[movefrom]>0))
+			if((WhoseMove==white)&&(square[movefrom]<0))
 			return 1;
-			else if((WhoseMove==black)&&(square[movefrom]<0))
+			else if((WhoseMove==black)&&(square[movefrom]>0))
 				return 1;
 			else
 				return 0;

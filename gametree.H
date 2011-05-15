@@ -18,7 +18,11 @@ tnode* getnode(Board b)
 	tnode *temp=NULL;
 	temp= new tnode;
 	if(temp==NULL)
-	{	cout<<endl<<"ERROR : MEMORY  INSUFFICIENT.";	getch();	exit(0);	}
+	{	
+		cout<<endl<<"ERROR : MEMORY  INSUFFICIENT.";	
+		getch();	
+		exit(0);	
+	}
 	temp->cbrd=b;
 	temp->turn=1;
 	temp->son=NULL;
@@ -28,7 +32,7 @@ tnode* getnode(Board b)
 
 
 tnode* append(tnode* list,tnode* x)
-{	
+{	int c=0;
 	tnode *temp=NULL;
 	tnode *p=NULL;
 	if(list==NULL)
@@ -42,16 +46,19 @@ tnode* append(tnode* list,tnode* x)
 			temp=temp->next;
 		temp->next=x;
 	}
-	/*
-	cout<<endl<<"Printing in Append.\n";
-	getch();
+	
+	/*//cout<<endl<<"Printing in Append.\n";
+	//getch();
 	p=list;
 	while(p!=NULL)
 	{	p->cbrd.printboard();
-		getch();
+		//getch();
+		c++;
 		p=p->next;
 	}
-    */
+	cout<<c;
+	getch();*/
+    
 	return list;
 }
 
@@ -126,7 +133,8 @@ void expand(tnode* p,int plevel,int depth)
 
 tnode* buildtree(Board brd,int depth)
 {	
-	cout<<endl<<"In Build tree"<<endl;getch(); 
+	cout<<endl<<"In Build tree"<<endl;
+	//getch(); 
 	tnode *ptree;
 	ptree=getnode(brd);
 	expand(ptree,0,depth);
@@ -171,14 +179,6 @@ void bestbranch(tnode* pnd,tnode **pbest,int *pvalue)
 }
 
 			
-void printtree(tnode* tree)
-{	if(tree)
-	{	tree->cbrd.printboard();	getch();
-		if(tree->next)	printtree(tree->next);
-		if(tree->son)	printtree(tree->son);
-	}
-}
-
 
 Board nextmove(Board brd,int depth)
 {	tnode* ptree;	tnode *best;
@@ -190,9 +190,12 @@ Board nextmove(Board brd,int depth)
 }
 
 
-
-
-
-
-
-/*--------------------------------------------------*/
+//OPTIONAL FUNCTIONS
+void printtree(tnode* tree)
+{	if(tree)
+	{	tree->cbrd.printboard();	
+		getch();
+		if(tree->next)	printtree(tree->next);
+		if(tree->son)	printtree(tree->son);
+	}
+}
